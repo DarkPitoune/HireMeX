@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS judge;
+CREATE TABLE judge (
+    name TEXT,
+    judge_id INTEGER PRIMARY KEY AUTOINCREMENT
+);
