@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require("express");
 const app = express();
 const cors = require("cors");
 const db = require("./database");
@@ -26,5 +26,5 @@ app.post("/", cors(), (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`App listening on port ${port}...`)
+  console.log(`App listening on port ${port}...`);
 });
