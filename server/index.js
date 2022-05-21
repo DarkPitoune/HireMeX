@@ -1,11 +1,30 @@
 const express = require('express')
 const app = express();
+const cors = require("cors");
+const db = require("./database");
 const port = 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+app.get("/applicant/:appId", cors(), (req, res) => {
+  const appId = req.params.appId;
+  const sql = `SELECT * FROM applicant WHERE app_id = ${appId}`;
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
+      data: rows[0],
+    });
+  });
+});
+
+app.post("/", cors(), (req, res) => {
+  const today = new Date().toJSON().split("T")[0];
+  const sql = `INSERT INTO events (date, description) VALUES (${today}, "Avoir l'idée de créer un site")`;
+  console.log(req);
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}!`)
+  console.log(`App listening on port ${port}...`)
 });
