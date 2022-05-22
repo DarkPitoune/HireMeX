@@ -11,6 +11,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  Divider,
 } from "@mui/material";
 
 import { JudgeContext } from "../judgeContext";
@@ -58,6 +59,42 @@ const Welcome = () => {
           <TableBody>
             {interviews
               .filter((interview) => interview.date > now)
+              .map((interview) => (
+                <TableRow
+                  key={interview.date.concat(`${interview.app_id}`)}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                    cursor: "pointer",
+                  }}
+                  onClick={() => navigate(`/applicant/${interview.app_id}`)}
+                >
+                  <TableCell component="th" scope="row">
+                    {interview.app_name}
+                  </TableCell>
+                  <TableCell align="right">{interview.company}</TableCell>
+                  <TableCell align="right">
+                    {interview.date.split("T")[0]} at{" "}
+                    {interview.date.split("T")[1]}
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Divider sx={{ margin: "1em" }} />
+      <Typography variant="h6">Your past interviews</Typography>
+      <TableContainer component={Paper} sx={{ marginTop: "2em" }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead sx={{ backgroundColor: "rgb(230, 240, 255)" }}>
+            <TableRow>
+              <TableCell>Applicant</TableCell>
+              <TableCell align="right">Company</TableCell>
+              <TableCell align="right">Interview</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {interviews
+              .filter((interview) => interview.date < now)
               .map((interview) => (
                 <TableRow
                   key={interview.date.concat(`${interview.app_id}`)}
