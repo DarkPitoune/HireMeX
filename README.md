@@ -46,7 +46,8 @@ The server runs using `node.js`.
 - `cd server`
 - `npm install`
 - `node index.js`
-  Server is now running on port 3000
+
+Server is now running on port 3000
 
 ### Client
 
@@ -54,7 +55,7 @@ The client app was created using `create-react-app`
 
 - `cd client`
 - `npm install`
-- `npm start` to run in development mode (app will run on port 8080 on mac, on 3001 on PC)
+- `npm start` to run in development mode (app will run on port 4000 on mac, on 3001 on PC)
 
 ## Potential future developments
 Starting from the most important ones :
