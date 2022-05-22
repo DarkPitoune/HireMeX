@@ -10,28 +10,103 @@ import {
   Divider,
   TextField,
   Paper,
+  Button,
 } from "@mui/material";
+
+import JudgesComments from "./JudgesComments";
+
+interface CurrentNote {
+  PC: {
+    grade: null | number;
+    comment: string;
+  };
+  EX: {
+    grade: null | number;
+    comment: string;
+  };
+  TD: {
+    grade: null | number;
+    comment: string;
+  };
+  ID: {
+    grade: null | number;
+    comment: string;
+  };
+}
 
 interface CellProps {
   title: string;
-  content: string;
+  currentNote: CurrentNote;
+  setCurrentNote: (note: CurrentNote) => void;
 }
 
 const FormCell = (props: CellProps) => {
+  const handleChangeGrade = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let nextNote = props.currentNote;
+    switch (props.title) {
+      case "TD":
+        nextNote.TD.grade = parseInt(event.target.value);
+        break;
+      case "PC":
+        nextNote.PC.grade = parseInt(event.target.value);
+        break;
+      case "EX":
+        nextNote.EX.grade = parseInt(event.target.value);
+        break;
+      case "ID":
+        nextNote.ID.grade = parseInt(event.target.value);
+        break;
+    }
+    props.setCurrentNote(nextNote);
+  };
+
+  const handleChangeComment = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let nextNote = props.currentNote;
+    switch (props.title) {
+      case "TD":
+        nextNote.TD.comment = event.target.value;
+        break;
+      case "PC":
+        nextNote.PC.comment = event.target.value;
+        break;
+      case "EX":
+        nextNote.EX.comment = event.target.value;
+        break;
+      case "ID":
+        nextNote.ID.comment = event.target.value;
+        break;
+    }
+    props.setCurrentNote(nextNote);
+  };
+
   return (
     <Grid item xs={6}>
       <Paper sx={{ padding: "1em" }}>
-        <span>{props.title}</span>
-        <TextField
-          id="outlined-number"
-          label="Grade"
-          type="number"
-          size="small"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField label="Comment" multiline maxRows={4} variant="filled" />
+        <Grid container>
+          <Grid item xs={3}>
+            <Box sx={{ margin: "10px" }}>{props.title}</Box>
+          </Grid>
+          <Grid item xs={9}>
+            <TextField
+              id="outlined-number"
+              label="Grade"
+              type="number"
+              size="small"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={handleChangeGrade}
+            />
+          </Grid>
+          <TextField
+            label="Comment"
+            multiline
+            maxRows={4}
+            variant="filled"
+            sx={{ marginTop: "1em", width: "100%" }}
+            onChange={handleChangeComment}
+          />
+        </Grid>
       </Paper>
     </Grid>
   );
@@ -44,6 +119,12 @@ interface AppData {
 }
 
 const Applicant = () => {
+  const [currentNote, setCurrentNote] = useState<CurrentNote>({
+    PC: { grade: null, comment: "" },
+    EX: { grade: null, comment: "" },
+    TD: { grade: null, comment: "" },
+    ID: { grade: null, comment: "" },
+  });
   const [appData, setAppData] = useState<AppData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const appId = useParams().appId;
@@ -54,6 +135,10 @@ const Applicant = () => {
       setIsLoading(false);
     });
   }, [appId]);
+
+  const submitNotes = () => {
+    console.log(currentNote);
+  };
 
   return (
     <Box sx={{ margin: "1em" }}>
@@ -98,11 +183,39 @@ const Applicant = () => {
         Grades and comments
       </Typography>
       <Grid container rowSpacing={1} columnSpacing={1}>
-        <FormCell title="PC" content="" />
-        <FormCell title="TD" content="" />
-        <FormCell title="EX" content="" />
-        <FormCell title="ID" content="" />
+        <FormCell
+          title="PC"
+          currentNote={currentNote}
+          setCurrentNote={setCurrentNote}
+        />
+        <FormCell
+          title="TD"
+          currentNote={currentNote}
+          setCurrentNote={setCurrentNote}
+        />
+        <FormCell
+          title="EX"
+          currentNote={currentNote}
+          setCurrentNote={setCurrentNote}
+        />
+        <FormCell
+          title="ID"
+          currentNote={currentNote}
+          setCurrentNote={setCurrentNote}
+        />
       </Grid>
+      <Button
+        onClick={submitNotes}
+        variant="contained"
+        sx={{ display: "block", margin: "1em auto" }}
+      >
+        Save
+      </Button>
+      <Divider sx={{ margin: "2em auto" }} />
+      <Typography variant="h4" mt="1em">
+        What other the judges think..
+      </Typography>
+      <JudgesComments />
     </Box>
   );
 };

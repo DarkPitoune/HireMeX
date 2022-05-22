@@ -20,12 +20,17 @@ CREATE TABLE interview (
 );
 DROP TABLE IF EXISTS notes;
 CREATE TABLE notes (
-    type TEXT,
     judge_id INTEGER,
     app_id INTEGER,
-    grade INTEGER,
-    comment TEXT,
+    comment_PC TEXT,
+    grade_PC INTEGER,
+    comment_EX TEXT,
+    grade_EX INTEGER,
+    comment_ID TEXT,
+    grade_ID INTEGER,
+    comment_TD TEXT,
+    grade_TD INTEGER,
     FOREIGN KEY (judge_id) REFERENCES judge(judge_id),
     FOREIGN KEY (app_id) REFERENCES applicant(app_id),
-    PRIMARY KEY (type, app_id, judge_id)
+    PRIMARY KEY (app_id, judge_id)
 )
