@@ -13,6 +13,7 @@ const Frame = (props: Props) => (
       margin: "auto",
       maxWidth: 1000,
       flexGrow: 1,
+      width: { xs: "100%", sm: "80%" },
     }}
     className="frame"
   >

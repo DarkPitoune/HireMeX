@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Frame, Applicant } from "./pages";
+import { JudgeContextProvider, ChooseJudge } from "./judgeContext";
 import "./App.css";
 
 import { ThemeProvider, createTheme } from "@mui/material";
@@ -17,15 +18,18 @@ const theme = createTheme({
 });
 
 const App = () => (
-  <ThemeProvider theme={theme}>
-    <Frame>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/applicant/:appId" element={<Applicant />} />
-        </Routes>
-      </BrowserRouter>
-    </Frame>
-  </ThemeProvider>
+  <JudgeContextProvider>
+    <ThemeProvider theme={theme}>
+      <ChooseJudge />
+      <Frame>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/applicant/:appId" element={<Applicant />} />
+          </Routes>
+        </BrowserRouter>
+      </Frame>
+    </ThemeProvider>
+  </JudgeContextProvider>
 );
 
 export default App;

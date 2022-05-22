@@ -42,7 +42,7 @@ app.get("/applicant/:appId/notes", (req, res) => {
 app.post("/applicant/:appId", (req, res) => {
   const appId = req.params.appId;
   const sql = `INSERT OR REPLACE INTO notes VALUES (${req.body.judgeId}, ${appId}, "${req.body.PC.comment}", ${req.body.PC.grade}, "${req.body.EX.comment}", ${req.body.EX.grade}, "${req.body.ID.comment}", ${req.body.ID.grade}, "${req.body.TD.comment}", ${req.body.TD.grade})`;
-  db.run(sql, (err, rows) => {
+  db.run(sql, (err) => {
     if (err) {
       res.status(400).json({ error: err.message });
       console.log(err.message);
@@ -51,6 +51,20 @@ app.post("/applicant/:appId", (req, res) => {
     res.status(201);
     res.json({
       message: "success",
+    });
+  });
+});
+
+app.get("/judges", (req, res) => {
+  const sql = "SELECT * FROM judge";
+  db.all(sql, (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
+      data: rows,
     });
   });
 });
