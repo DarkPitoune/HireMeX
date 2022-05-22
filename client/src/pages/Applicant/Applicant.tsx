@@ -17,7 +17,12 @@ import KeyboardBackspaceOutlinedIcon from "@mui/icons-material/KeyboardBackspace
 
 import JudgesComments from "./JudgesComments";
 import { JudgeContext } from "../../judgeContext";
+import NotesData from "./NotesData.d";
 
+interface Note {
+  grade: string;
+  comment: string;
+}
 interface CurrentNote {
   PC: {
     grade: null | number;
@@ -82,6 +87,42 @@ const FormCell = (props: CellProps) => {
     props.setCurrentNote(nextNote);
   };
 
+  const [notebyCategory, setNotebyCategory] = useState<Note>({
+    grade: "",
+    comment: "",
+  });
+
+  useEffect(() => {
+    switch (props.title) {
+      case "TD":
+        setNotebyCategory({
+          grade: (props.currentNote.TD.grade || "0").toString(),
+          comment: props.currentNote.TD.comment,
+        });
+        break;
+      case "PC":
+        setNotebyCategory({
+          grade: (props.currentNote.PC.grade || "0").toString(),
+          comment: props.currentNote.PC.comment,
+        });
+        break;
+      case "EX":
+        setNotebyCategory({
+          grade: (props.currentNote.EX.grade || "0").toString(),
+          comment: props.currentNote.EX.comment,
+        });
+        break;
+      case "ID":
+        setNotebyCategory({
+          grade: (props.currentNote.ID.grade || "0").toString(),
+          comment: props.currentNote.ID.comment,
+        });
+        break;
+      default:
+        setNotebyCategory({ grade: "0", comment: "" });
+    }
+  });
+
   return (
     <Grid item xs={6}>
       <Paper sx={{ padding: "1em" }}>
@@ -91,21 +132,22 @@ const FormCell = (props: CellProps) => {
           </Grid>
           <Grid item xs={9}>
             <TextField
-              id="outlined-number"
-              label="Grade"
-              type="number"
+              multiline
               size="small"
+              label="Grade"
+              defaultValue={notebyCategory.grade}
+              sx={{ marginTop: "1em", width: "100%" }}
+              onChange={handleChangeComment}
               InputLabelProps={{
                 shrink: true,
               }}
-              onChange={handleChangeGrade}
             />
           </Grid>
           <TextField
-            label="Comment"
             multiline
             maxRows={4}
             variant="filled"
+            defaultValue={notebyCategory.comment}
             sx={{ marginTop: "1em", width: "100%" }}
             onChange={handleChangeComment}
           />
@@ -131,9 +173,25 @@ const Applicant = () => {
     TD: { grade: null, comment: "" },
     ID: { grade: null, comment: "" },
   });
+
+  const appId = useParams().appId;
+  useEffect(() => {
+    axios.get(`http://localhost:3000/applicant/${appId}/notes`).then((res) => {
+      const comments: NotesData[] = res.data.data;
+      const comment = comments.find((c: NotesData) => c.judge_id === judge.id);
+      if (comment) {
+        setCurrentNote({
+          PC: { grade: comment.grade_PC, comment: comment.comment_PC },
+          EX: { grade: comment.grade_EX, comment: comment.comment_EX },
+          TD: { grade: comment.grade_TD, comment: comment.comment_TD },
+          ID: { grade: comment.grade_ID, comment: comment.comment_ID },
+        });
+      }
+    });
+  }, [appId]);
+
   const [appData, setAppData] = useState<AppData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const appId = useParams().appId;
 
   useEffect(() => {
     axios.get(`http://localhost:3000/applicant/${appId}`).then((res) => {

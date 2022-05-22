@@ -28,7 +28,6 @@ const Welcome = () => {
   const { judge } = useContext(JudgeContext);
   const [interviews, setInterviews] = useState<Interview[]>([]);
   const now = new Date().toISOString().split(".")[0];
-  console.log(now);
 
   useEffect(() => {
     axios.get(`http://localhost:3000/${judge.id}/interviews`).then((res) => {
