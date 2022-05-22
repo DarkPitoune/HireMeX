@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
 
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Box } from "@mui/material";
 
 interface NotesData {
   judge_id: number;
@@ -33,13 +33,39 @@ const JudgesComment = () => {
   return (
     <Grid container rowSpacing={1} columnSpacing={1}>
       {!isLoading && notesData ? (
-        <Grid container>
+        <Grid container spacing={1}>
           {notesData.map((note) => (
             <Grid item xs={12} key={note.judge_id}>
               <Paper sx={{padding: "0.3em"}}>
                 <p>
                   <i>{note.Name} says ...</i>
                 </p>
+                <Grid container>
+                  <Grid item xs={6}>
+                    TD : <b>{note.grade_TD}</b>
+                    <Box sx={{backgroundColor: 'rgb(255, 247, 233)', margin:"5px", padding:"5px", borderRadius: '3px'}}>
+                      {note.comment_TD}
+                    </Box>
+                  </Grid>
+                  <Grid item xs={6}>
+                    EX : <b>{note.grade_EX}</b>
+                    <Box sx={{backgroundColor: 'rgb(255, 247, 233)', margin:"5px", padding:"5px", borderRadius: '3px'}}>
+                      {note.comment_EX}
+                    </Box>
+                  </Grid>
+                  <Grid item xs={6}>
+                    ID : <b>{note.grade_ID}</b>
+                    <Box sx={{backgroundColor: 'rgb(255, 247, 233)', margin:"5px", padding:"5px", borderRadius: '3px'}}>
+                      {note.comment_ID}
+                    </Box>
+                  </Grid>
+                  <Grid item xs={6}>
+                    PC : <b>{note.grade_PC}</b>
+                    <Box sx={{backgroundColor: 'rgb(255, 247, 233)', margin:"5px", padding:"5px", borderRadius: '3px'}}>
+                      {note.comment_PC}
+                    </Box>
+                  </Grid>
+                </Grid>
               </Paper>
             </Grid>
           ))}

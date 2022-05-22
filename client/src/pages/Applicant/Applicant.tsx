@@ -212,8 +212,8 @@ const Applicant = () => {
         Save
       </Button>
       <Divider sx={{ margin: "2em auto" }} />
-      <Typography variant="h4" mt="1em">
-        What other the judges think..
+      <Typography variant="h4" mt="1em" mb="1em">
+        What the other judges think..
       </Typography>
       <JudgesComments />
     </Box>
