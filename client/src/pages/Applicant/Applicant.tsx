@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import axios from "axios";
 import { useParams } from "react-router";
@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 
 import JudgesComments from "./JudgesComments";
+import { JudgeContext } from "../../judgeContext";
 
 interface CurrentNote {
   PC: {
@@ -119,6 +120,8 @@ interface AppData {
 }
 
 const Applicant = () => {
+  const { judge } = useContext(JudgeContext);
+
   const [currentNote, setCurrentNote] = useState<CurrentNote>({
     PC: { grade: null, comment: "" },
     EX: { grade: null, comment: "" },
@@ -139,7 +142,7 @@ const Applicant = () => {
   const submitNotes = () => {
     const body = {
       ...currentNote,
-      judgeId: 1,
+      judgeId: judge.id,
       appId: appId,
     };
     axios.post(`http://localhost:3000/applicant/${appId}`, body);

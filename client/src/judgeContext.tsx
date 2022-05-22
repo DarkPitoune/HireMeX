@@ -30,10 +30,19 @@ interface ProviderProps {
 }
 
 const JudgeContextProvider = (props: ProviderProps) => {
-  const [judge, setJudge] = useState<Judge>({
-    id: 0,
-    name: "",
-  });
+  const localJudgeId = parseInt(localStorage.getItem("judgeId") as string);
+  const localJudgeName = localStorage.getItem("judgeName");
+  const [judge, setJudge] = useState<Judge>(
+    localJudgeName
+      ? {
+        id: localJudgeId,
+        name: localJudgeName
+      }
+      : {
+          id: 0,
+          name: "",
+        }
+  );
 
   return (
     <JudgeContext.Provider
@@ -64,7 +73,11 @@ const ChooseJudge = () => {
   const handleChange = (event: SelectChangeEvent) => {
     const newName = event.target.value as string;
     const newJudge = judges.find((judge) => judge.name === newName);
-    if (newJudge) setJudge(newJudge);
+    if (newJudge) {
+      localStorage.setItem("judgeId", `${newJudge.id}`);
+      localStorage.setItem("judgeName", newJudge.name);
+      setJudge(newJudge);
+    }
   };
 
   return (
