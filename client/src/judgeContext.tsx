@@ -35,9 +35,9 @@ const JudgeContextProvider = (props: ProviderProps) => {
   const [judge, setJudge] = useState<Judge>(
     localJudgeName
       ? {
-        id: localJudgeId,
-        name: localJudgeName
-      }
+          id: localJudgeId,
+          name: localJudgeName,
+        }
       : {
           id: 0,
           name: "",

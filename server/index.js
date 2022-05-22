@@ -69,6 +69,21 @@ app.get("/judges", (req, res) => {
   });
 });
 
+app.get("/:judgeId/interviews", (req, res) => {
+  const judgeId = req.params.judgeId;
+  const sql = `SELECT * FROM judge JOIN interview ON judge.judge_id = interview.judge_id JOIN applicant ON applicant.app_id=interview.app_id WHERE judge.judge_id=${judgeId}`;
+  db.all(sql, (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
+      data: rows,
+    });
+  });
+});
+
 app.listen(port, () => {
   console.log(`App listening on port ${port}...`);
 });

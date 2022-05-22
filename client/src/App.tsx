@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Frame, Applicant } from "./pages";
+import { Frame, Applicant, Welcome } from "./pages";
 import { JudgeContextProvider, ChooseJudge } from "./judgeContext";
 import "./App.css";
 
@@ -25,6 +25,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/applicant/:appId" element={<Applicant />} />
+            <Route path="/" element={<Welcome />} />
           </Routes>
         </BrowserRouter>
       </Frame>
