@@ -137,7 +137,12 @@ const Applicant = () => {
   }, [appId]);
 
   const submitNotes = () => {
-    console.log(currentNote);
+    const body = {
+      ...currentNote,
+      judgeId: 1,
+      appId: appId,
+    };
+    axios.post(`http://localhost:3000/applicant/${appId}`, body);
   };
 
   return (
